@@ -10,3 +10,11 @@
 
 ##工具
 [Visual Paradigm](https://www.visual-paradigm.com)
+
+##脚本
+```sql
+    create table user {
+    id int ,
+    ACCount_id varchar (100),
+    }
+```
