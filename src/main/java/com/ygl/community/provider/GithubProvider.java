@@ -21,6 +21,8 @@ public class GithubProvider {
                 .build();
         try (Response response = client.newCall(request).execute()) {
             String string = response.body().string();
+            System.out.println("========================");
+            System.out.println("token:"+string);
             String[] strings = string.split("&");
             String[] strings1 = strings[0].split("=");
             String token=strings1[1];
@@ -40,6 +42,8 @@ public class GithubProvider {
             Response response = client.newCall(request).execute();
             String string = response.body().string();
             GithubUser githubUser = JSON.parseObject(string, GithubUser.class);
+            System.out.println("========================");
+            System.out.println("githUser:"+githubUser);
             return githubUser;
         } catch (IOException e) {
             e.printStackTrace();
