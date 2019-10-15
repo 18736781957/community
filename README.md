@@ -6,7 +6,7 @@
 [Spring web](https://spring.io/guides/gs/serving-web-content/)   
 [Bootstrap](https://v3.bootcss.com/getting-started/)  
 [Github Oauth](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)  
-
+[flywaydb](https://flywaydb.org/getstarted/firststeps/maven)
 
 ##工具
 [Visual Paradigm](https://www.visual-paradigm.com)
@@ -17,4 +17,7 @@
     id int ,
     ACCount_id varchar (100),
     }
+```
+```bash
+    mvn flyway:migrate
 ```
