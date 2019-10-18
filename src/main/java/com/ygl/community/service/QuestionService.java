@@ -1,5 +1,6 @@
 package com.ygl.community.service;
 
+import com.ygl.community.dto.PaginationDTO;
 import com.ygl.community.dto.QuestionDTO;
 import com.ygl.community.mapper.QuestionMapper;
 import com.ygl.community.mapper.UserMapper;
@@ -19,13 +20,28 @@ public class QuestionService {
     @Autowired
     UserMapper userMapper;
 
-    public List<QuestionDTO> list() {
-        List<Question> questionList = questionMapper.list();
-        List<QuestionDTO>  questionDTOList=new ArrayList<>();
-        for (Question question:questionList){
-            User user=userMapper.findById(question.getCreator());
+    public PaginationDTO list(Integer page, Integer size) {
+        PaginationDTO paginationDTO = new PaginationDTO();
+        Integer totalCount = questionMapper.count();//所有的数据条数、
+        paginationDTO.setPagination(totalCount, page, size);//把所有的数据条数 当前页  每页的数量大小 全部传给setPagination方法进行计算
+        if (page < 1) {
+            page = 1;
+        }
+
+        if (page > paginationDTO.getTotalPage()) {
+            page = paginationDTO.getTotalPage();
+        }
+
+        //从第几个数开始：(page-1)*size
+        Integer offset = (page - 1) * size;
+
+        List<Question> questionList = questionMapper.list(offset, size);
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+
+        for (Question question : questionList) {
+            User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question,questionDTO);//这个牛逼
+            BeanUtils.copyProperties(question, questionDTO);//这个牛逼
             questionDTO.setUser(user);
 //            questionDTO.setId(question.getId());
 //            questionDTO.setTitle(question.getTitle());
@@ -38,8 +54,9 @@ public class QuestionService {
 //            questionDTO.setGmtModified(question.getGmtModified());
 //            questionDTO.setCreator(question.getCreator());
             questionDTOList.add(questionDTO);
-
         }
-        return questionDTOList;
+
+        paginationDTO.setQuestions(questionDTOList);
+        return paginationDTO;
     }
 }
